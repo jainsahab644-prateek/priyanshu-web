@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+  }
+  
+  body {
+    @apply bg-cream font-sans text-charcoal;
+  }
+}
+
+/* Premium styling helpers */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #aa881b 0%, #D4AF37 50%, #f4df91 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #a8861c 0%, #D4AF37 50%, #f4df91 100%);
+}
+
+.gold-border-glow {
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+}
+
+.gold-border-glow-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gold-border-glow-hover:hover {
+  box-shadow: 0 0 18px rgba(212, 175, 55, 0.35);
+  border: 1px solid rgba(212, 175, 55, 0.6);
+}
+
+/* Luxury glassmorphism for top elements */
+.glass-panel {
+  background: rgba(250, 246, 240, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Smooth fade and slide transitions */
+.transition-luxury {
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Custom Scrollbar for a sleek look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF6F0;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #580F17;
+}
+
+/* Image zoom effect wrapper */
+.image-zoom-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+.image-zoom-wrapper img {
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.image-zoom-wrapper:hover img {
+  transform: scale(1.08);
+}
