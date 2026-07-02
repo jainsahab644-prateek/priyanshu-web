@@ -3,11 +3,13 @@ const path = require('path');
 const mongoose = require('mongoose');
 const dns = require('dns');
 
-// Set DNS servers for SRV record resolution
-try {
-  dns.setServers(['8.8.8.8', '8.8.4.4']);
-} catch (e) {
-  console.warn('Warning: Could not set DNS servers. Connection to Mongo SRV might fail.', e);
+// Set DNS servers for SRV record resolution (only locally)
+if (!process.env.VERCEL) {
+  try {
+    dns.setServers(['8.8.8.8', '8.8.4.4']);
+  } catch (e) {
+    console.warn('Warning: Could not set DNS servers. Connection to Mongo SRV might fail.', e);
+  }
 }
 
 const DATA_DIR = process.env.VERCEL
