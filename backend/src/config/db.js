@@ -28,13 +28,16 @@ if (!fs.existsSync(DATA_DIR)) {
 class JSONCollection {
   constructor(name) {
     this.filePath = path.join(DATA_DIR, `${name}.json`);
-    if (!fs.existsSync(this.filePath)) {
-      fs.writeFileSync(this.filePath, JSON.stringify([], null, 2));
-    }
   }
 
   async read() {
     try {
+      if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      }
+      if (!fs.existsSync(this.filePath)) {
+        fs.writeFileSync(this.filePath, JSON.stringify([], null, 2));
+      }
       const data = fs.readFileSync(this.filePath, 'utf8');
       return JSON.parse(data || '[]');
     } catch (error) {
@@ -45,6 +48,9 @@ class JSONCollection {
 
   async write(data) {
     try {
+      if (!fs.existsSync(DATA_DIR)) {
+        fs.mkdirSync(DATA_DIR, { recursive: true });
+      }
       fs.writeFileSync(this.filePath, JSON.stringify(data, null, 2));
     } catch (error) {
       console.error(`Error writing database file ${this.filePath}:`, error);
