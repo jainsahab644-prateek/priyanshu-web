@@ -17,8 +17,14 @@ const DATA_DIR = process.env.VERCEL
   : path.join(__dirname, '../../data');
 
 // Create database folder if it doesn't exist (for JSON fallback)
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
+if (!process.env.MONGO_URI) {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch (err) {
+    console.warn('Warning: Could not create local data directory:', err.message);
+  }
 }
 
 // ==========================================

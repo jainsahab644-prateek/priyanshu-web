@@ -5,8 +5,14 @@ const fs = require('fs');
 const UPLOADS_DIR = path.join(__dirname, '../../uploads');
 
 // Ensure upload directory exists
-if (!fs.existsSync(UPLOADS_DIR)) {
-  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+if (!process.env.VERCEL) {
+  try {
+    if (!fs.existsSync(UPLOADS_DIR)) {
+      fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+    }
+  } catch (err) {
+    console.warn('Warning: Could not create upload directory:', err.message);
+  }
 }
 
 const storage = multer.memoryStorage();
