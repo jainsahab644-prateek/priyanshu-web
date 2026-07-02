@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { ArrowRight, Star, Award, ShieldCheck, Heart } from 'lucide-react';
+import { ArrowRight, Star, Award, ShieldCheck } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 import ProductCard from '../components/ProductCard';
 

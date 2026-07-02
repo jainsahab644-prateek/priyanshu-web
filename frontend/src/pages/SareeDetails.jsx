@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, MessageSquare, Share2, Award, Info, Heart, ArrowLeft, Loader2, Check } from 'lucide-react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ShoppingBag, MessageSquare, Share2, Award, ArrowLeft, Loader2, Check } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
 import ProductCard from '../components/ProductCard';
@@ -62,7 +62,7 @@ const SareeDetails = () => {
     if (saved) {
       try {
         list = JSON.parse(saved);
-      } catch (e) {
+      } catch (_e) {
         list = [];
       }
     }

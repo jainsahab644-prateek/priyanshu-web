@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams as RouterParams, Link as RouterLink, useNavigate as RouterNavigate } from 'react-router-dom';
-import { CheckCircle2, MessageSquare, ShoppingBag, MapPin, Phone, User, Calendar, Printer } from 'lucide-react';
+import { CheckCircle2, MessageSquare, ShoppingBag, MapPin, Phone, User, Calendar } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
 
 const OrderConfirmation = () => {
@@ -43,9 +43,6 @@ const OrderConfirmation = () => {
     }).format(value);
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
 
   // Generate WhatsApp Invoice deep-link
   const getWhatsAppInvoiceLink = () => {
