@@ -325,10 +325,48 @@ let db;
 if (process.env.MONGO_URI) {
   console.log('MongoDB connection URI detected. Connecting...');
   
-  mongoose.connect(process.env.MONGO_URI)
+  const resolveAndConnect = async () => {
+    let connectionUri = process.env.MONGO_URI;
+    if (connectionUri.startsWith('mongodb+srv://')) {
+      try {
+        const match = connectionUri.match(/^mongodb\+srv:\/\/([^:]+):([^@]+)@([^/?]+)(?:\/([^?]*))?(?:\?(.*))?$/);
+        if (match) {
+          const [, username, password, host, database = '', queryParams = ''] = match;
+          
+          const resolver = new dns.promises.Resolver();
+          resolver.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+          
+          console.log(`Resolving MongoDB DNS SRV records for ${host}...`);
+          const srvRecords = await resolver.resolveSrv(`_mongodb._tcp.${host}`);
+          const hostList = srvRecords.map(r => `${r.name}:${r.port}`).join(',');
+          
+          let txtOptions = '';
+          try {
+            const txtRecords = await resolver.resolveTxt(host);
+            if (txtRecords && txtRecords.length > 0) {
+              txtOptions = txtRecords.flat().join('&');
+            }
+          } catch (e) {
+            console.warn('Warning: Could not resolve MongoDB DNS TXT records:', e.message);
+          }
+          
+          const finalParams = [txtOptions, queryParams, 'ssl=true'].filter(Boolean).join('&');
+          connectionUri = `mongodb://${username}:${password}@${hostList}/${database}?${finalParams}`;
+          console.log('Successfully resolved SRV URI to standard MongoDB format.');
+        }
+      } catch (err) {
+        console.warn('Warning: Dynamic SRV resolution failed. Connecting with original URI...', err.message);
+      }
+    }
+    
+    return mongoose.connect(connectionUri);
+  };
+
+  resolveAndConnect()
     .then(() => console.log('Successfully connected to MongoDB.'))
     .catch(err => {
-      console.error('Error connecting to MongoDB. Check MONGO_URI in .env.', err);
+      console.error('Error connecting to MongoDB. Check MONGO_URI in .env.');
+      console.error(`Reason: [${err.name}] ${err.message}`);
     });
 
   // Compile Mongoose models

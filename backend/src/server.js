@@ -143,9 +143,6 @@ if (!process.env.VERCEL) {
     console.log(`Server is running on port ${PORT}`);
     await seedDatabase();
   });
-} else {
-  // In Vercel serverless context, seed on import
-  seedDatabase();
 }
 
 module.exports = app;
