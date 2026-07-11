@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Image, MessageSquare, X, Check, Loader2 } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
+import { compressImage } from '../utils/imageCompressor';
 
 const AdminBanners = () => {
   const { announcements, refreshAll } = useSettings();
@@ -477,7 +478,15 @@ const AdminBanners = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => setBannerDesktopFile(e.target.files ? e.target.files[0] : null)}
+                      onChange={async (e) => {
+                        const file = e.target.files ? e.target.files[0] : null;
+                        if (file) {
+                          const compressed = await compressImage(file);
+                          setBannerDesktopFile(compressed);
+                        } else {
+                          setBannerDesktopFile(null);
+                        }
+                      }}
                       className="w-full text-[10px] bg-cream-light border border-cream-dark/45 rounded p-1.5"
                     />
                   </div>
@@ -494,7 +503,15 @@ const AdminBanners = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) => setBannerMobileFile(e.target.files ? e.target.files[0] : null)}
+                      onChange={async (e) => {
+                        const file = e.target.files ? e.target.files[0] : null;
+                        if (file) {
+                          const compressed = await compressImage(file);
+                          setBannerMobileFile(compressed);
+                        } else {
+                          setBannerMobileFile(null);
+                        }
+                      }}
                       className="w-full text-[10px] bg-cream-light border border-cream-dark/45 rounded p-1.5"
                     />
                   </div>

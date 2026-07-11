@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Search, Trash2, Edit2, Eye, EyeOff, Loader2, X, AlertCircle, ShoppingBag } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
+import { compressImage } from '../utils/imageCompressor';
 
 const AdminProducts = () => {
   const { categories, collections, refreshAll } = useSettings();
@@ -182,10 +183,13 @@ const AdminProducts = () => {
     }
   };
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     if (e.target.files) {
       const filesArray = Array.from(e.target.files);
-      setSelectedFiles(prev => [...prev, ...filesArray]);
+      const compressedFiles = await Promise.all(
+        filesArray.map(file => compressImage(file))
+      );
+      setSelectedFiles(prev => [...prev, ...compressedFiles]);
     }
   };
 

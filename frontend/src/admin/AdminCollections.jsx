@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Layers, X, Check, Loader2 } from 'lucide-react';
 import { useSettings } from '../context/SettingsContext';
+import { compressImage } from '../utils/imageCompressor';
 
 const AdminCollections = () => {
   const { collections, refreshAll } = useSettings();
@@ -338,7 +339,15 @@ const AdminCollections = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => setBannerImageFile(e.target.files ? e.target.files[0] : null)}
+                  onChange={async (e) => {
+                    const file = e.target.files ? e.target.files[0] : null;
+                    if (file) {
+                      const compressed = await compressImage(file);
+                      setBannerImageFile(compressed);
+                    } else {
+                      setBannerImageFile(null);
+                    }
+                  }}
                   className="w-full text-xs font-medium bg-cream-light border border-cream-dark/45 rounded p-2"
                 />
               </div>
